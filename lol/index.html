@@ -9,11 +9,13 @@
     <title>Product App</title>
 </head>
 <body>
-    <div id="app">
-        <product></product>
-        <product :premium="premium"></product>
+<div id="app">
+    <div class="cart">
+        <p>Cart({{ cart.length }})</p>
     </div>
-    <script defer src="/src/vue.js"></script>
-    <script defer src="/src/main.js"></script>
+    <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></product>
+</div>
+<script defer src="/src/vue.js"></script>
+<script defer src="/src/main.js"></script>
 </body>
 </html>
