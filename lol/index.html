@@ -14,7 +14,8 @@
         <p>Cart({{ cart.length }})</p>
     </div>
     <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></product>
-    <product-review @review-submitted="addReview"></product-review>
+    <product-tabs :reviews="reviews"></product-tabs>
+
 
 </div>
 <script defer src="/src/vue.js"></script>

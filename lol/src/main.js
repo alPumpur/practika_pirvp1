@@ -1,3 +1,5 @@
+let eventBus = new Vue()
+
 Vue.component('product', {
     props: {
         premium: {
@@ -73,7 +75,8 @@ Vue.component('product', {
         },
         updateProduct(variantImage) {
             this.image = variantImage;
-        }
+        },
+
     },
     computed: {
         title() {
@@ -93,6 +96,11 @@ Vue.component('product', {
                 return 2.99
             }
         }
+    },
+    mounted() {
+        eventBus.$on('review-submitted', function (productReview) {
+            this.reviews.push(productReview);
+        }.bind(this));
     }
 });
 
@@ -116,8 +124,7 @@ Vue.component('product-review', {
     template: `
       <div class="product-review-title">
         <div>
-        <h2>Reviews</h2>
-        <p v-if="!reviews.length">There are no reviews yet.</p>
+
         </div>
         <ul>
           <li v-for="review in reviews" :key="review.id">
@@ -135,27 +142,26 @@ Vue.component('product-review', {
             </ul>
           </div>
           <p>
-          <p>
             <label for="name">Name:</label>
             <input id="name" v-model="name" placeholder="name">
           </p>
-  
+
           <p>
             <label for="review">Review:</label>
             <textarea id="review" v-model="review"></textarea>
           </p>
-  
+
           <p>
             <label for="rating">Rating:</label>
             <select id="rating" v-model.number="rating">
-              <option>5</option>
-              <option>4</option>
-              <option>3</option>
-              <option>2</option>
-              <option>1</option>
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
             </select>
           </p>
-  
+
           <p>Would you recommend this product?</p>
           <label>
             Yes
@@ -165,7 +171,7 @@ Vue.component('product-review', {
             No
             <input type="radio" value="No" v-model="recommend"/>
           </label>
-  
+
           <p>
             <input type="submit" value="Submit">
           </p>
@@ -193,7 +199,7 @@ Vue.component('product-review', {
                     recommend: this.recommend,
                     id: this.reviews.length + 1 // Add unique id for each review
                 };
-                this.$emit('review-submitted', productReview);
+                eventBus.$emit('review-submitted', productReview)
                 this.name = null;
                 this.review = null;
                 this.rating = null;
@@ -209,12 +215,57 @@ Vue.component('product-review', {
 });
 
 
+Vue.component('product-tabs', {
+    props: {
+        reviews: {
+            type: Array,
+            required: false
+        }
+    },
+
+    template: `
+      <div>
+        <ul>
+         <span class="tab"
+               :class="{ activeTab: selectedTab === tab }"
+               v-for="(tab, index) in tabs"
+               @click="selectedTab = tab"
+         >{{ tab }}</span>
+        </ul>
+        <div v-show="selectedTab === 'Reviews'">
+          <p v-if="!reviews.length">There are no reviews yet.</p>
+          <ul>
+            <li v-for="review in reviews">
+              <p>{{ review.name }}</p>
+              <p>Rating: {{ review.rating }}</p>
+              <p>{{ review.review }}</p>
+            </li>
+          </ul>
+        </div>
+        <div v-show="selectedTab === 'Make a Review'">
+          <product-review></product-review>
+        </div>
+      </div>
+
+
+
+    `,
+    data() {
+        return {
+            tabs: ['Reviews', 'Make a Review'],
+            selectedTab: 'Reviews'
+        }
+    }
+
+});
+
 
 let app = new Vue({
     el: '#app',
     data: {
         premium: true,
-        cart: []
+        cart: [],
+        reviews: [] // Initialize an empty array to hold reviews
     },
     methods: {
         updateCart(id) {
@@ -226,5 +277,10 @@ let app = new Vue({
                 this.cart.splice(index, 1);
             }
         }
+    },
+    mounted() {
+        eventBus.$on('review-submitted', productReview => {
+            this.reviews.push(productReview);
+        });
     }
 });
