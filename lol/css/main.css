@@ -91,3 +91,7 @@ textarea {
 .out-of-stock {
     text-decoration: line-through;
 }
+
+.product-review-title{
+    display: flex;
+}
