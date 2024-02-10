@@ -14,7 +14,8 @@
         <p>Cart({{ cart.length }})</p>
     </div>
     <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></product>
-    <product-tabs :reviews="reviews"></product-tabs>
+    <product-tabs :reviews="reviews" :details="details" :selectedTab="selectedTab"></product-tabs>
+
 
 
 </div>
@@ -22,3 +23,4 @@
 <script defer src="/src/main.js"></script>
 </body>
 </html>
+

@@ -113,6 +113,7 @@ Vue.component('product-details', {
     },
     template: `
       <div class="product-details">
+        <p>Product Details:</p>
         <ul>
           <li v-for="detail in details">{{ detail }}</li>
         </ul>
@@ -220,17 +221,24 @@ Vue.component('product-tabs', {
         reviews: {
             type: Array,
             required: false
+        },
+        details: {
+            type: Array,
+            required: false
+        },
+        selectedTab: {
+            type: String, // Тип может быть строкой, так как это будет имя вкладки
+            required: true
         }
     },
-
     template: `
       <div>
         <ul>
-         <span class="tab"
-               :class="{ activeTab: selectedTab === tab }"
-               v-for="(tab, index) in tabs"
-               @click="selectedTab = tab"
-         >{{ tab }}</span>
+                <span class="tab"
+                      :class="{ activeTab: selectedTab === tab }"
+                      v-for="(tab, index) in tabs"
+                      @click="selectedTab = tab"
+                >{{ tab }}</span>
         </ul>
         <div v-show="selectedTab === 'Reviews'">
           <p v-if="!reviews.length">There are no reviews yet.</p>
@@ -245,27 +253,45 @@ Vue.component('product-tabs', {
         <div v-show="selectedTab === 'Make a Review'">
           <product-review></product-review>
         </div>
+        <div v-show="selectedTab === 'Shipping'">
+          <product-shipping :premium="premium"></product-shipping>
+        </div>
+        <div v-show="selectedTab === 'Details'">
+          <product-details :details="details"></product-details>
+        </div>
       </div>
-
-
-
     `,
     data() {
         return {
-            tabs: ['Reviews', 'Make a Review'],
-            selectedTab: 'Reviews'
+            tabs: ['Reviews', 'Make a Review', 'Shipping', 'Details']
         }
     }
-
 });
 
+
+Vue.component('product-shipping', {
+    props: {
+        premium: {
+            type: Boolean,
+            required: true
+        }
+    },
+    template: `
+        <div>
+            <p>Shipping Details:</p>
+            <p v-if="premium">Free Shipping</p>
+            <p v-else>Standard Shipping: $2.99</p>
+        </div>
+    `
+});
 
 let app = new Vue({
     el: '#app',
     data: {
         premium: true,
         cart: [],
-        reviews: [] // Initialize an empty array to hold reviews
+        reviews: [], // Initialize an empty array to hold reviews
+        details: ['80% cotton', '20% polyester', 'Gender-neutral'], // Add details data
     },
     methods: {
         updateCart(id) {
