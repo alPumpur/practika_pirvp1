@@ -6,47 +6,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/main.css">
-    <script defer src="/src/vue.js"></script>
-    <script defer src="/src/main.js"></script>
     <title>Product App</title>
 </head>
 <body>
-<div id="app">
-    <h1>{{ product }}</h1>
-    <p>{{ description }}</p>
-
-    <div class="product">
-        <div class="product-image">
-            <img :src="image" :alt="altText" />
-        </div>
-
-        <div class="product-info">
-            <h1>{{ title }}</h1>
-            <p>{{ sale }}</p>
-            <a :href="link">More products like this</a>
-            <p v-if="inventory > 10">In stock</p>
-            <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
-            <p v-else :class="{ 'out-of-stock': !inStock }">Out of stock</p>
-            <span v-if="onSale">On Sale</span>
-            <ul>
-                <li v-for="detail in details">{{ detail }}</li>
-            </ul>
-            <div class="color-box" v-for="variant in variants" :key="variant.variantId" :style="{ backgroundColor:variant.variantColor }"
-                 @mouseover="updateProduct(variant.variantImage)">
-            </div>
-            <p>Sizes:</p>
-            <ul>
-                <li v-for="size in sizes">{{ size }}</li>
-            </ul>
-            <div class="cart">
-                <p>Cart({{ cart }})</p>
-            </div>
-            <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to cart</button>
-            <button v-on:click="removeFromCart">Remove from cart</button>
-        </div>
+    <div id="app">
+        <product></product>
+        <product :premium="premium"></product>
     </div>
-
-</div>
-
+    <script defer src="/src/vue.js"></script>
+    <script defer src="/src/main.js"></script>
 </body>
 </html>
