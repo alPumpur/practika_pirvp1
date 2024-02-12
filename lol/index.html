@@ -9,18 +9,15 @@
     <title>Product App</title>
 </head>
 <body>
-<div id="app">
-    <div class="cart">
-        <p>Cart({{ cart.length }})</p>
+    <div id="app">
+        <div class="cart">
+            <p>Cart({{ cart.length }})</p>
+        </div>
+        <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></product>
+        <product-tabs :reviews="reviews" :details="details" :selectedTab="selectedTab"></product-tabs>
     </div>
-    <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></product>
-    <product-tabs :reviews="reviews" :details="details" :selectedTab="selectedTab"></product-tabs>
-
-
-
-</div>
-<script defer src="/src/vue.js"></script>
-<script defer src="/src/main.js"></script>
+    <script defer src="/src/vue.js"></script>
+    <script defer src="/src/main.js"></script>
 </body>
 </html>
 

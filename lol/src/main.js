@@ -30,8 +30,10 @@ Vue.component('product', {
           <ul>
             <li v-for="size in sizes">{{ size }}</li>
           </ul>
+          <div class="RemoveBut">
           <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to cart</button>
           <button v-on:click="removeFromCart">Remove from cart</button>
+          </div>
         </div>
       </div>
     `,

@@ -95,3 +95,8 @@ textarea {
 .product-review-title{
     display: flex;
 }
+
+.RemoveBut{
+    display: flex;
+    gap: 10px;
+}
