@@ -32,7 +32,7 @@ Vue.component('product', {
           </ul>
           <div class="RemoveBut">
           <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to cart</button>
-          <button v-on:click="removeFromCart">Remove from cart</button>
+          <button v-on:click="removeFromCart" class="">Remove from cart</button>
           </div>
         </div>
       </div>
@@ -46,8 +46,8 @@ Vue.component('product', {
             altText: "A pair of socks",
             link: "https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=socks",
             inStock: true,
-            inventory: 100,
-            onSale: false,
+            inventory: 5,
+            onSale: true,
             details: ['80% cotton', '20% polyester', 'Gender-neutral'],
             variants: [
                 {
@@ -200,7 +200,7 @@ Vue.component('product-review', {
                     review: this.review,
                     rating: this.rating,
                     recommend: this.recommend,
-                    id: this.reviews.length + 1 // Add unique id for each review
+                    id: this.reviews.length + 1
                 };
                 eventBus.$emit('review-submitted', productReview)
                 this.name = null;
@@ -229,18 +229,15 @@ Vue.component('product-tabs', {
             required: false
         },
         selectedTab: {
-            type: String, // Тип может быть строкой, так как это будет имя вкладки
+            type: String,
             required: true
         }
     },
     template: `
       <div>
         <ul>
-                <span class="tab"
-                      :class="{ activeTab: selectedTab === tab }"
-                      v-for="(tab, index) in tabs"
-                      @click="selectedTab = tab"
-                >{{ tab }}</span>
+                <span class="tab" :class="{ activeTab: selectedTab === tab }" v-for="(tab, index) in tabs"
+                      @click="selectedTab = tab">{{ tab }}</span>
         </ul>
         <div v-show="selectedTab === 'Reviews'">
           <p v-if="!reviews.length">There are no reviews yet.</p>
@@ -292,7 +289,7 @@ let app = new Vue({
     data: {
         premium: true,
         cart: [],
-        reviews: [], // Initialize an empty array to hold reviews
+        reviews: [],
         details: ['80% cotton', '20% polyester', 'Gender-neutral'], // Add details data
     },
     methods: {
