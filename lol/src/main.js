@@ -64,7 +64,6 @@ Vue.component('product', {
             sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
             cart: [],
             selectedVariant: 0,
-
         };
     },
     methods: {
@@ -165,19 +164,19 @@ Vue.component('product-review', {
             </select>
           </p>
 
-          <p>Would you recommend this product?</p>
-          <label>
-            Yes
-            <input type="radio" value="Yes" v-model="recommend"/>
-          </label>
-          <label>
-            No
-            <input type="radio" value="No" v-model="recommend"/>
-          </label>
-
-          <p>
-            <input type="submit" value="Submit">
-          </p>
+           <p>Would you recommend this product?</p>
+           <label>
+              Yes
+              <input type="radio" value="Yes" v-model="recommend"/>
+            </label>
+            <label>
+              No
+              <input type="radio" value="No" v-model="recommend"/>
+            </label>
+            
+            <p>
+              <input type="submit" value="Submit" :disabled="rating <= 2 && recommend === 'Yes'">
+            </p>
         </form>
       </div>
     `,
@@ -236,8 +235,8 @@ Vue.component('product-tabs', {
     template: `
       <div>
         <ul>
-                <span class="tab" :class="{ activeTab: selectedTab === tab }" v-for="(tab, index) in tabs"
-                      @click="selectedTab = tab">{{ tab }}</span>
+            <span class="tab" :class="{ activeTab: selectedTab === tab }" v-for="(tab, index) in tabs"
+                  @click="selectedTab = tab">{{ tab }}</span>
         </ul>
         <div v-show="selectedTab === 'Reviews'">
           <p v-if="!reviews.length">There are no reviews yet.</p>
@@ -277,9 +276,8 @@ Vue.component('product-shipping', {
     },
     template: `
         <div>
-            <p>Shipping Details:</p>
             <p v-if="premium">Free Shipping</p>
-            <p v-else>Standard Shipping: $2.99</p>
+            <p v-else>Standard Shipping: $4.99</p>
         </div>
     `
 });
